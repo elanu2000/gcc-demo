@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Room</title>
+    <script>
+        function addPlayerInput() {
+            var container = document.getElementById("player-container");
+            var input = document.createElement("input");
+            input.type = "text";
+            input.name = "players[]";
+            container.appendChild(input);
+        }
+    </script>
+</head>
+<body>
+    <h1>Create a Room</h1>
+
+    <form action="/finalize_room/{{ room_id }}" method="post">
+        <div id="player-container">
+            <input type="text" name="players[]" required>
+        </div>
+        <button type="button" onclick="addPlayerInput()">Add More Players</button>
+        <button type="submit">Finalize Room</button>
+    </form>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Room</title>
+    <script>
+        var gameLocked = false;
+
+        function handleGameLock() {
+            var playerFields = document.getElementsByClassName('player-section');
+            var lockGameButton = document.getElementById('lock-game');
+            gameLocked = !gameLocked;
+
+            if (gameLocked) {
+                lockGameButton.innerText = 'Edit Game';
+                for (var i = 0; i < playerFields.length; i++) {
+                    playerFields[i].style.display = 'block';
+                }
+            } else {
+                lockGameButton.innerText = 'Lock Game';
+                for (var i = 0; i < playerFields.length; i++) {
+                    playerFields[i].style.display = 'none';
+                }
+            }
+        }
+
+        function handleLockIn(playerId) {
+            var inputField = document.getElementById('input-' + playerId);
+            var lockInButton = document.getElementById('lock-in-' + playerId);
+            var toggleButton = document.getElementById('toggle-' + playerId);
+
+            if (lockInButton.innerText === 'Lock In') {
+                inputField.type = 'password';
+                lockInButton.innerText = 'Edit';
+                toggleButton.innerText = 'Show';
+            } else {
+                inputField.type = 'text';
+                lockInButton.innerText = 'Lock In';
+                toggleButton.innerText = 'Hide';
+            }
+        }
+
+        function toggleVisibility(playerId) {
+            var inputField = document.getElementById('input-' + playerId);
+            var toggleButton = document.getElementById('toggle-' + playerId);
+
+            if (inputField.type === 'password') {
+                inputField.type = 'text';
+                toggleButton.innerText = 'Hide';
+            } else {
+                inputField.type = 'password';
+                toggleButton.innerText = 'Show';
+            }
+        }
+
+        function validatePlayerInputs() {
+        var playerInputs = document.getElementsByClassName('player-input');
+        if (playerInputs.length % 2 != 0)
+            return false;
+        for (var i = 0; i < playerInputs.length; i++) {
+            if (!inputValue || parseInt(playerInputs[i].value) <= 0) {
+                alert('All player fields must have a value greater than 0 to start the game.');
+                return false; // Prevents the form from submitting
+            }
+        }
+        return true; // Allows the form to submit
+    }
+
+    </script>
+    <style>
+        .player-section {
+            display: none;
+            margin-bottom: 20px;
+        }
+        .team-input {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Room</h1>
+
+    <!-- ... other parts of your HTML ... -->
+    <form action="/game_started" method="post">
+        <input type="hidden" name="room_id" value="{{ room_id }}">
+        <div class="team-input">
+            <label for="home_team">Home Team:</label>
+            <input type="text" id="home_team" name="home_team">
+        </div>
+        <div class="team-input">
+            <label for="away_team">Away Team:</label>
+            <input type="text" id="away_team" name="away_team">
+        </div>
+        <button type="submit">Start Game</button>
+        <button type="button" id="lock-game" onclick="handleGameLock()">Lock Game</button>
+        {% for player in players %}
+            <div class="player-section">
+                <h2>{{ player }}</h2>
+                <input type="number" class="player-input" id="input-{{ loop.index }}" name="player_input_{{ loop.index }}">
+                <button type="button" id="lock-in-{{ loop.index }}" onclick="handleLockIn({{ loop.index }})">Lock In</button>
+                <button type="button" id="toggle-{{ loop.index }}" onclick="toggleVisibility({{ loop.index }})">Hide</button>
+            </div>
+        {% endfor %}
+    </form>
+
+</body>
+</html>

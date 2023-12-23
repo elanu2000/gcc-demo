@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Game Room</title>
+    <script>
+        function joinRoom() {
+            var roomId = document.getElementById('join_room_id').value;
+            if (roomId) {
+                window.location.href = '/room/' + roomId;
+            }
+            return false;
+        }
+    </script>
+</head>
+<body>
+    <h1>Welcome to the Game Room</h1>
+
+    <!-- Button to Create a Room -->
+    <form action="/create_room" method="post">
+        <button type="submit">Create Room</button>
+    </form>
+
+    <!-- Form to Join a Room -->
+    <form onsubmit="return joinRoom();">
+        <h2>Join a Room</h2>
+        <label for="join_room_id">Room ID:</label>
+        <input type="text" id="join_room_id" name="room_id" required>
+        <button type="submit">Join Room</button>
+    </form>
+</body>
+</html>
