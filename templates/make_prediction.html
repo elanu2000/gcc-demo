@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Make prediction</title>
+</head>
+<body>
+    <form action="/game_started" method="post">
+        <div id="prediction-section">
+            <input type="hidden" name="room_id" value="{{ room_id }}">
+            <input type="hidden" name="home_team" value="{{ home_team }}">
+            <input type="hidden" name="away_team" value="{{ away_team }}">
+            <label for="player">Choose a player:</label>
+            <select id="player" name="player">
+                {% for player in players %}
+                    <option value="{{ player }}">{{ player }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="prediction-input">Enter Prediction:</label>
+            <input type="number" id="prediction" name="prediction">
+            <button type="submit">Submit Prediction</button>
+        </div>
+    </form>
+</body>
+</html>

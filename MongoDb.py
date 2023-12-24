@@ -30,3 +30,6 @@ class MongoDb:
     
     def write_element(self, collection, document):
         self.db[collection].insert_one(document)
+
+    def update_document(self, collection, criteria_key, criteria_value, key_to_update, value_to_update):
+        self.db[collection].update_one({criteria_key: criteria_value}, {"$set": {key_to_update : value_to_update}})

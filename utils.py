@@ -2,6 +2,7 @@ import time, json
 from MatchStatistics import MatchStatistics
 from ExcelWriter import ExcelWriter
 from MongoDb import MongoDb
+import ast
 
 def get_total_score(match):
     teams = match.split("-")
@@ -57,3 +58,14 @@ def create_room(mongo_client, players):
 
 def get_room(mongo_client, room_id):
     return mongo_client.get_element("rooms", "room_id", int(room_id))
+
+def string_to_list(string_list):
+    try:
+        # Safely evaluate the string as a Python expression
+        result = ast.literal_eval(string_list)
+        if isinstance(result, list):
+            return result
+        else:
+            raise ValueError("The string does not represent a list.")
+    except (ValueError, SyntaxError):
+        return []

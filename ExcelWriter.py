@@ -62,5 +62,5 @@ class ExcelWriter:
         for index, prediction in enumerate(predictions):
             column = index + 3
             print(column, prediction)
-            result = self.update_cell(self.service, empty_row, prediction, column)
+            result = self.update_cell(self.service, empty_row, int(prediction), column)
             print(f"Updated cell: {result.get('updatedCells')} cells updated.")
