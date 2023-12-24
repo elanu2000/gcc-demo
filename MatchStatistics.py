@@ -1,18 +1,12 @@
 import requests, json
+from MongoDb import MongoDb
 
 class MatchStatistics:
     def __init__(self, home_team, away_team):
         self.home_team = home_team
         self.away_team = away_team
-        if home_team in self.team_dict:
-            self.querystring_match = {"team_id": self.team_dict[home_team]}
-        elif away_team in self.team_dict:
-            self.querystring_match = {"team_id": self.team_dict[away_team]}
-        else:
-            self.querystring_match = {}
-
-    with open("team_dict.json", "r") as file:
-        team_dict = json.load(file)
+        self.mongo_client = MongoDb()
+        self.get_querystring_match()
 
     url_endpoint = "https://sofascores.p.rapidapi.com/v1"
     url_match_suffix = "/teams/near-events"
@@ -27,6 +21,15 @@ class MatchStatistics:
     total_corners = 0
     total_yellow_cards = 0
     total_red_cards = 0
+
+    def get_querystring_match(self):
+        home_team_id = self.mongo_client.get_element("team_dict", "team", self.home_team)
+        away_team_id = self.mongo_client.get_element("team_dict", "team", self.away_team)
+        if home_team_id and away_team_id:
+            self.querystring_match = {"team_id": home_team_id["team_id"]}
+        else: 
+            self.querystring_match = {}
+        print(self.querystring_match)
 
     def get_event_id(self):
         if len(self.querystring_match) == 0:

@@ -1,6 +1,7 @@
 import time, json
 from MatchStatistics import MatchStatistics
 from ExcelWriter import ExcelWriter
+from MongoDb import MongoDb
 
 def get_total_score(match):
     teams = match.split("-")
@@ -23,18 +24,36 @@ def start_game(home_team, away_team):
         time.sleep(180)
     is_match_finished = False
     while is_match_finished is False:
-        if time.time() > start_timestamp + 6900 and match_statistics.is_match_finished():
-            print("Match is finished!")
-            is_match_finished = True
         print(match + ":")
         match_statistics.get_goals()
         match_statistics.get_total_corners()
         match_statistics.get_adjusted_cards()
         print(match_statistics.get_total_score())
         excel_writer.write_goals_corners_cards(match_statistics.total_goals, match_statistics.total_corners, match_statistics.total_adjusted_cards)
-        time.sleep(180)
+        if time.time() > start_timestamp + 6900 and match_statistics.is_match_finished():
+            print("Match is finished!")
+            is_match_finished = True
+        else:
+            time.sleep(180)
 
 def write_predictions(home_team, away_team, predictions):
     match = home_team + " - " + away_team
     excel_writer = ExcelWriter(match)
     excel_writer.write_predictions(predictions)
+
+def create_room(mongo_client, players):
+    room_id = mongo_client.db["rooms"].count_documents({}) + 1
+    room = {"room_id" : room_id, "players" : {}}
+    players_list = []
+    for player in players:
+        player_dict = {}
+        player_dict["name"] = player
+        player_dict["prediction"] = 0
+        players_list.append(player_dict)
+    room["players"] = players_list
+    print(room)
+    mongo_client.write_element("rooms", room)
+    return room_id
+
+def get_room(mongo_client, room_id):
+    return mongo_client.get_element("rooms", "room_id", int(room_id))
