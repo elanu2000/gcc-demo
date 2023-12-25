@@ -25,6 +25,9 @@ class MongoDb:
             collection.append(dict)
         return collection
     
+    def get_element_by_query(self, collection, query):
+        return self.db[collection].find_one(query)
+    
     def get_element(self, collection, key, value):
         return self.db[collection].find_one({key: value})
     
@@ -33,3 +36,6 @@ class MongoDb:
 
     def update_document(self, collection, criteria_key, criteria_value, key_to_update, value_to_update):
         self.db[collection].update_one({criteria_key: criteria_value}, {"$set": {key_to_update : value_to_update}})
+
+    def update_document_by_query(self, collection, critera_query, to_update_query):
+        self.db[collection].update_one(critera_query, {"$set": to_update_query})

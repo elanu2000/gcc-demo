@@ -18,6 +18,9 @@
         h1 {
             margin-bottom: 20px; /* Spacing between headings */
         }
+        .link-text {
+            color: #0d6efd; /* Color for hyperlink, adjust as needed */
+        }
         /* Additional styling can be added here */
     </style>
 </head>
@@ -25,6 +28,7 @@
     <div class="container">
         <h1>{{ message_1 }}</h1>
         <h1>{{ message_2 }}</h1>
+        <h1>This is the <a href="{{ message_3 }}" class="link-text">link</a> to the spreadsheet</h1>
         <!-- Add more content as needed -->
     </div>
     <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>

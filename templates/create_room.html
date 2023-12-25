@@ -59,6 +59,7 @@
         <h1 class="header text-center">Create a Room</h1>
 
         <form action="/finalize_room" method="post">
+            <input type="hidden" name="room_id" value="{{ room_id }}">
             <div class="form-group" id="player-container">
                 <label for="players[]">Players:</label>
                 <input type="text" name="players[]" class="form-control" required>

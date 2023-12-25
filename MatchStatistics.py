@@ -7,6 +7,7 @@ class MatchStatistics:
         self.away_team = away_team
         self.mongo_client = MongoDb()
         self.get_querystring_match()
+        self.get_event_json()
 
     url_endpoint = "https://sofascores.p.rapidapi.com/v1"
     url_match_suffix = "/teams/near-events"
@@ -22,30 +23,36 @@ class MatchStatistics:
     total_yellow_cards = 0
     total_red_cards = 0
 
+
+
     def get_querystring_match(self):
-        home_team_id = self.mongo_client.get_element("team_dict", "team", self.home_team)
-        away_team_id = self.mongo_client.get_element("team_dict", "team", self.away_team)
-        if home_team_id and away_team_id:
-            self.querystring_match = {"team_id": home_team_id["team_id"]}
+        self.home_team_id = self.mongo_client.get_element("team_dict", "team", self.home_team)["team_id"]
+        self.away_team_id = self.mongo_client.get_element("team_dict", "team", self.away_team)["team_id"]
+        if self.home_team_id and self.away_team_id:
+            self.querystring_match = {"team_id": self.home_team_id}
         else: 
             self.querystring_match = {}
         print(self.querystring_match)
 
-    def get_event_id(self):
+    def get_event_json(self):
         if len(self.querystring_match) == 0:
-            Exception("No team is registered in team_dict")
+                    Exception("No team is registered in team_dict")
         response = requests.get(self.url_endpoint + self.url_match_suffix, headers=self.headers, params=self.querystring_match)
         response = response.json()
-        event_json = response['data']['previousEvent']
-        event_id = int(event_json['id'])
+        self.event_json = response['data']['previousEvent']
+        self.querystring_statistics = {}
+        print(self.event_json['homeTeam']['id'], self.home_team_id, self.event_json['awayTeam']['id'], self.away_team_id)
+        if self.event_json['homeTeam']['id'] != self.home_team_id or self.event_json['awayTeam']['id'] != self.away_team_id:
+            self.event_json = response['data']['nextEvent']
+        print(self.event_json)
+
+    def get_event_id(self):
+        event_id = int(self.event_json['id'])
         self.querystring_statistics = {"event_id": str(event_id)}
-        return str(event_id)
+        return event_id
 
     def get_start_timestamp(self, event_id):
-        response = requests.get(self.url_endpoint + self.url_match_suffix, headers=self.headers, params=self.querystring_match)
-        response = response.json()
-        event_json = response['data']['previousEvent']
-        start_timestamp = int(event_json['startTimestamp'])
+        start_timestamp = int(self.event_json['startTimestamp'])
         return start_timestamp
     
     def is_match_finished(self):
