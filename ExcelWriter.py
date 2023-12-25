@@ -8,7 +8,7 @@ class ExcelWriter:
         self.create_service()
     
     def create_service(self):
-        SERVICE_ACCOUNT_FILE = '/Users/elanu/Documents/GCC/gcyr-408819-83b15ce5b8eb.json'
+        SERVICE_ACCOUNT_FILE = 'gcyr-408819-83b15ce5b8eb.json'
         SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
         creds = Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=SCOPES)
         self.service = build('sheets', 'v4', credentials=creds)
