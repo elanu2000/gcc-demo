@@ -2,30 +2,73 @@
 <html>
 <head>
     <title>Create Room</title>
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    <style>
+        body {
+            background-color: #111316; /* Dark background */
+            color: #ffffff; /* White text */
+            margin-top: 40px;
+            padding-bottom: 40px; /* Space for footer */
+        }
+        .container {
+            width: 40%; /* Further reduced width for a smaller form */
+            margin: auto;
+        }        
+        .header {
+            background-color: #111316; /* Header background same as body */
+            padding: 20px 0;
+            margin-bottom: 100px; /* Increased space below header */
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .btn {
+            margin-top: 10px;
+            /* background-color: #495057; 
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer; */
+        }
+        .btn:hover {
+            background-color: #6c757d;
+        }
+    </style>
     <script>
         function addPlayerInput() {
             var container = document.getElementById("player-container");
             var input = document.createElement("input");
             input.type = "text";
             input.name = "players[]";
+            input.className = "form-control"; // Bootstrap class
             container.appendChild(input);
         }
     </script>
 </head>
 <body>
-    <h1>Create a Room</h1>
+    <div class="container">
+        <h1 class="header text-center">Create a Room</h1>
 
-    <form action="/finalize_room" method="post">
-        <div class="room_id">
-            <label for="room_id">Room Name:</label>
-            <input type="text" id="room_id" name="room_id">
-        </div>
-        <div id="player-container">
-            <label for="players[]">Players:</label>
-            <input type="text" name="players[]" required>
-        </div>
-        <button type="button" onclick="addPlayerInput()">Add More Players</button>
-        <button type="submit">Finalize Room</button>
-    </form>
+        <form action="/finalize_room" method="post">
+            <div class="form-group" id="player-container">
+                <label for="players[]">Players:</label>
+                <input type="text" name="players[]" class="form-control" required>
+            </div>
+            <div class="text-center">
+                <button type="button" onclick="addPlayerInput()" class="btn btn-primary">Add More Players</button>
+                <button type="submit" class="btn btn-light">Finalize Room</button>
+            </div>
+        </form>
+    </div>
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
 </body>
 </html>

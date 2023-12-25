@@ -2,30 +2,66 @@
 <html>
 <head>
     <title>Game Room</title>
+    <!-- Reference to local Bootstrap CSS -->
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    <style>
+        body {
+            background-color: #111316; /* Darker background */
+            color: #ffffff; /* White text */
+            margin-top: 40px;
+            padding-bottom: 40px; /* Space for footer */
+        }
+        .header {
+            background-color: #111316; /* Header background same as body */
+            padding: 20px 0;
+            margin-bottom: 150px; /* Increased space below header */
+        }
+        .card {
+            background-color: #111316; /* Even darker card background */
+            padding: 20px;
+        }
+        .button-group {
+            display: flex;
+            justify-content: space-around; /* Space around buttons */
+            margin-top: 20px; /* Extra space above the button group */
+        }
+        .btn {
+            margin: 0 10px; /* Space between buttons */
+        }
+        label {
+            color: #ffffff; /* White label */
+        }
+    </style>
     <script>
-        function joinRoom() {
-            var roomId = document.getElementById('join_room_id').value;
-            if (roomId) {
-                window.location.href = '/room/' + roomId;
-            }
+        function handleRoom(action) {
+            var roomId = document.getElementById('room_id').value;
+            window.location.href = '/' + action + '/' + roomId;
             return false;
         }
     </script>
 </head>
 <body>
-    <h1>Welcome to the Game Room</h1>
+    <div class="container">
+        <div class="header text-center">
+            <h1>Goals, corners and cards!</h1>
+        </div>
 
-    <!-- Button to Create a Room -->
-    <form action="/create_room" method="post">
-        <button type="submit">Create Room</button>
-    </form>
-
-    <!-- Form to Join a Room -->
-    <form onsubmit="return joinRoom();">
-        <h2>Join a Room</h2>
-        <label for="join_room_id">Room ID:</label>
-        <input type="text" id="join_room_id" name="room_id" required>
-        <button type="submit">Join Room</button>
-    </form>
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-4">
+                <div class="card text-center">
+                    <div class="form-group">
+                        <label for="room_id">Enter the room name:</label>
+                        <input type="text" id="room_id" class="form-control" required>
+                    </div>
+                    <div class="button-group">
+                        <button onclick="handleRoom('create_room')" class="btn btn-primary">Create Room</button>
+                        <button onclick="handleRoom('room')" class="btn btn-light">Join Room</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Reference to local Bootstrap JS -->
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
 </body>
 </html>

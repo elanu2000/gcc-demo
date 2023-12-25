@@ -11,9 +11,11 @@ mongo_client = MongoDb()
 def index():
     return render_template('index.html')
 
-@app.route('/create_room', methods=['POST'])
-def create_room():
-    return render_template('create_room.html')
+@app.route('/create_room/<room_id>', methods=['GET'])
+def create_room(room_id):
+    if utils.get_room(mongo_client, room_id) is None:
+        return render_template('create_room.html', room_id=room_id)
+    return render_template("error.html", error="Room already exists!")
 
 @app.route('/finalize_room', methods=['POST'])
 def finalize_room():

@@ -1,25 +1,72 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Make prediction</title>
+    <title>Make Prediction</title>
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    <style>
+        body {
+            background-color: #111316; /* Dark background */
+            color: #ffffff; /* White text */
+            margin-top: 40px;
+            padding-bottom: 40px; /* Space for footer */
+        }
+        .header {
+            background-color: #111316; /* Header background same as body */
+            padding: 20px 0;
+            margin-bottom: 100px; /* Increased space below header */
+        }
+        .container {
+            width: 60%;
+            margin: auto;
+            padding: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            color: #ffffff; /* White label */
+        }
+        select, input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .btn {
+            margin-top: 10px;
+        }
+        .btn:hover {
+            background-color: #6c757d;
+        }
+    </style>
 </head>
 <body>
-    <form action="/game_started" method="post">
-        <div id="prediction-section">
+    <div class="container">
+        <h1 class="header text-center">Make Prediction</h1>
+
+        <form action="/game_started" method="post" class="form-group">
             <input type="hidden" name="room_id" value="{{ room_id }}">
             <input type="hidden" name="home_team" value="{{ home_team }}">
             <input type="hidden" name="away_team" value="{{ away_team }}">
-            <label for="player">Choose a player:</label>
-            <select id="player" name="player">
-                {% for player in players %}
-                    <option value="{{ player }}">{{ player }}</option>
-                {% endfor %}
-            </select>
 
-            <label for="prediction-input">Enter Prediction:</label>
-            <input type="number" id="prediction" name="prediction">
-            <button type="submit">Submit Prediction</button>
-        </div>
-    </form>
+            <div class="form-group">
+                <label for="player">Choose a player:</label>
+                <select id="player" name="player" class="form-control">
+                    {% for player in players %}
+                        <option value="{{ player }}">{{ player }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="prediction-input">Enter Prediction:</label>
+                <input type="number" id="prediction" name="prediction" class="form-control">
+            </div>
+
+            <button type="submit" class="btn btn-light">Submit Prediction</button>
+        </form>
+    </div>
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
 </body>
 </html>

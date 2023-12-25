@@ -2,9 +2,50 @@
 <html>
 <head>
     <title>Room</title>
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    <style>
+        body {
+            background-color: #111316; /* Dark background */
+            color: #ffffff; /* White text */
+            margin-top: 40px;
+            padding-bottom: 40px; /* Space for footer */
+        }
+        .container {
+            width: 60%; /* Adjusted width for a smaller form */
+            margin: auto;
+        }
+        .header {
+            background-color: #111316; /* Header background */
+            padding: 20px 0;
+            margin-bottom: 100px; /* Space below header */
+        }
+        .card {
+            background-color: #111316; /* Card background */
+            padding: 20px;
+            margin-bottom: 20px; /* Space below card */
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .btn {
+            margin-top: 10px;
+            /* background-color: #6c757d;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer; */
+        }
+        .btn:hover {
+            background-color: #7a8288;
+        }
+        .team-input label, .player-section label {
+            color: #ffffff; /* White label text */
+        }
+        /* Additional styles if needed */
+    </style>
     <script>
-
-        function handleLockIn(playerId) {
+         function handleLockIn(playerId) {
             var inputField = document.getElementById('input-' + playerId);
             var lockInButton = document.getElementById('lock-in-' + playerId);
             var toggleButton = document.getElementById('toggle-' + playerId);
@@ -27,54 +68,30 @@
             var form = document.getElementById('game-form');
             form.action = '/room/' + '{{ room_id }}' + '/' + encodeURIComponent(matchTitle);
         }
-
-        // function submitPrediction() {
-        //     var player = document.getElementById('player-dropdown').value;
-        //     var prediction = document.getElementById('prediction-input').value;
-
-        //     console.log("Prediction for player", player, "is:", prediction);
-        //     // Add your code here to handle the prediction (e.g., send to server)
-        // }
-
     </script>
-    <style>
-        .player-section {
-            display: none;
-            margin-bottom: 20px;
-        }
-        .team-input {
-            margin-bottom: 10px;
-        }
-    </style>
 </head>
 <body>
-    <h1>Room</h1>
-    <form id="game-form" method="post">
-        <input type="hidden" name="room_id" value="{{ room_id }}">
-        <input type="hidden" name="players" value="{{ players }}">
-        <div class="team-input">
-            <label for="home_team">Home Team:</label>
-            <input type="text" id="home_team" name="home_team" onchange="setFormAction()">
+    <div class="container">
+        <div class="header text-center">
+            <h1>Room: {{ room_id }}</h1>
         </div>
-        <div class="team-input">
-            <label for="away_team">Away Team:</label>
-            <input type="text" id="away_team" name="away_team" onchange="setFormAction()">
-        </div>
-        <button type="submit" id="lock-game">Make prediction</button>
-    </form>
 
+        <div class="card">
+            <form id="game-form" method="post" class="form-group">
+                <input type="hidden" name="room_id" value="{{ room_id }}">
+                <input type="hidden" name="players" value="{{ players }}">
+                <div class="team-input">
+                    <label for="home_team">Home Team:</label>
+                    <input type="text" id="home_team" name="home_team" class="form-control" onchange="setFormAction()">
+                </div>
+                <div class="team-input">
+                    <label for="away_team">Away Team:</label>
+                    <input type="text" id="away_team" name="away_team" class="form-control" onchange="setFormAction()">
+                </div>
+                <button type="submit" id="lock-game" class="btn btn-light">Make prediction</button>
+            </form>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
 </body>
 </html>
-
-<!-- <div id="prediction-section" style="display: none;">
-    <label for="player-dropdown">Choose a player:</label>
-    <select id="player-dropdown">
-        {% for player in players %}
-            <option value="{{ player }}">{{ player }}</option>
-        {% endfor %}
-    </select>
-
-    <label for="prediction-input">Enter Prediction:</label>
-    <input type="number" id="prediction-input" name="prediction-input">
-    <button type="button" onclick="submitPrediction()">Submit Prediction</button>
-</div> -->
