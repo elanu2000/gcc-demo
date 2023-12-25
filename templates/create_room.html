@@ -16,7 +16,12 @@
     <h1>Create a Room</h1>
 
     <form action="/finalize_room" method="post">
+        <div class="room_id">
+            <label for="room_id">Room Name:</label>
+            <input type="text" id="room_id" name="room_id">
+        </div>
         <div id="player-container">
+            <label for="players[]">Players:</label>
             <input type="text" name="players[]" required>
         </div>
         <button type="button" onclick="addPlayerInput()">Add More Players</button>

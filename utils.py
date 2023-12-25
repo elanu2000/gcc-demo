@@ -42,8 +42,7 @@ def write_predictions(home_team, away_team, predictions):
     excel_writer = ExcelWriter(match)
     excel_writer.write_predictions(predictions)
 
-def create_room(mongo_client, players):
-    room_id = mongo_client.db["rooms"].count_documents({}) + 1
+def create_room(mongo_client, players, room_id):
     room = {"room_id" : room_id, "players" : {}}
     players_list = []
     for player in players:
@@ -57,7 +56,7 @@ def create_room(mongo_client, players):
     return room_id
 
 def get_room(mongo_client, room_id):
-    return mongo_client.get_element("rooms", "room_id", int(room_id))
+    return mongo_client.get_element("rooms", "room_id", room_id)
 
 def string_to_list(string_list):
     try:

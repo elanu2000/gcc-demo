@@ -17,8 +17,9 @@ def create_room():
 
 @app.route('/finalize_room', methods=['POST'])
 def finalize_room():
+    room_id = request.form.get('room_id')
     players = request.form.getlist('players[]')
-    room_id = utils.create_room(mongo_client, players)
+    room_id = utils.create_room(mongo_client, players, room_id)
     return redirect(url_for('room', room_id=room_id))
 
 @app.route('/room/<room_id>', methods=['GET'])
@@ -53,14 +54,14 @@ def game_started():
     player_name = request.form['player']
     prediction = request.form['prediction']
 
-    players = mongo_client.get_element("rooms", "room_id", int(room_id))["players"]
+    players = mongo_client.get_element("rooms", "room_id", room_id)["players"]
     
     for index, player_dict in enumerate(players):
         if player_dict["name"] == player_name:
             player_dict["prediction"] = prediction
         players[index] = player_dict
         
-    mongo_client.update_document("rooms", "room_id", int(room_id), "players", players)
+    mongo_client.update_document("rooms", "room_id", room_id, "players", players)
 
     is_prediction_complete = True
     player_predictions = []
