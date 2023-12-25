@@ -49,7 +49,7 @@ def create_room(mongo_client, players):
     for player in players:
         player_dict = {}
         player_dict["name"] = player
-        player_dict["prediction"] = 0
+        player_dict["prediction"] = "0"
         players_list.append(player_dict)
     room["players"] = players_list
     print(room)
